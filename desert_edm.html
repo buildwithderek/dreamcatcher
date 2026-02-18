@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DREAMCATCHER Music Festival — California 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Great+Vibes&family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   RESET & FOUNDATION
+   ============================================= */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Rajdhani', sans-serif;
+  background: #050510;
+  color: #c8d0e8;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* =============================================
+   CSS VARIABLES — DREAMCATCHER PALETTE
+   Pulled from poster: deep blacks, teal/cyan dominant,
+   purple/violet secondary, magenta accents, nebula wisps
+   ============================================= */
+:root {
+  --sky-top: #030308;
+  --sky-mid: #05051a;
+  --sky-bottom: #0c1228;
+  --nebula-blue: #1a237e;
+  --nebula-purple: #4a148c;
+
+  --teal: #00e5ff;
+  --teal-dim: #00acc1;
+  --teal-glow: rgba(0, 229, 255, 0.4);
+
+  --purple: #8b5cf6;
+  --purple-deep: #6d28d9;
+  --purple-glow: rgba(139, 92, 246, 0.4);
+
+  --magenta: #e040fb;
+  --magenta-glow: rgba(224, 64, 251, 0.3);
+
+  --cyan-teal-grad: linear-gradient(135deg, #00e5ff, #8b5cf6);
+  --teal-purple-grad: linear-gradient(90deg, #00e5ff, #8b5cf6, #e040fb);
+
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.07);
+  --glass-border-hover: rgba(0, 229, 255, 0.25);
+
+  --text-primary: #e8ecf4;
+  --text-secondary: rgba(200, 208, 232, 0.6);
+  --text-dim: rgba(200, 208, 232, 0.35);
+}
+
+/* =============================================
+   NIGHT SKY — Deep black with nebula wisps
+   ============================================= */
+.sky-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 75% 20%, rgba(26, 35, 126, 0.25) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 40%, rgba(74, 20, 140, 0.15) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 80%, rgba(0, 229, 255, 0.03) 0%, transparent 40%),
+    linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 35%, var(--sky-bottom) 100%);
+}
+
+/* Stars */
+.stars-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+}
+
+.star.twinkle {
+  animation: twinkle 3s ease-in-out infinite alternate;
+}
+
+.star.teal-tint { background: rgba(0, 229, 255, 0.9); }
+.star.purple-tint { background: rgba(139, 92, 246, 0.9); }
+
+@keyframes twinkle {
+  0% { opacity: 0.2; transform: scale(0.7); }
+  100% { opacity: 1; transform: scale(1.3); }
+}
+
+/* Shooting stars */
+.shooting-star {
+  position: absolute;
+  width: 100px;
+  height: 1.5px;
+  background: linear-gradient(90deg, rgba(0,229,255,0.9), rgba(139,92,246,0.4), transparent);
+  transform: rotate(-35deg);
+  animation: shoot 8s linear infinite;
+  opacity: 0;
+}
+
+@keyframes shoot {
+  0% { opacity: 0; transform: translateX(0) translateY(0) rotate(-35deg); }
+  1% { opacity: 1; }
+  6% { opacity: 0; transform: translateX(350px) translateY(220px) rotate(-35deg); }
+  100% { opacity: 0; }
+}
+
+/* =============================================
+   LASER BEAMS — CSS laser effects from poster
+   ============================================= */
+.laser-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.12;
+}
+
+.laser {
+  position: absolute;
+  bottom: 50%;
+  width: 2px;
+  height: 120vh;
+  transform-origin: bottom center;
+  animation: laserSweep 12s ease-in-out infinite;
+}
+
+.laser.teal { background: linear-gradient(to top, var(--teal), transparent 80%); }
+.laser.purple { background: linear-gradient(to top, var(--purple), transparent 80%); }
+.laser.magenta { background: linear-gradient(to top, var(--magenta), transparent 80%); }
+
+@keyframes laserSweep {
+  0%, 100% { transform: rotate(var(--start-angle)); opacity: 0.6; }
+  50% { transform: rotate(var(--end-angle)); opacity: 1; }
+}
+
+/* =============================================
+   SPARKLE / GLITTER PARTICLES
+   ============================================= */
+.sparkle-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.sparkle {
+  position: absolute;
+  animation: sparkleFloat 9s ease-in-out infinite;
+  opacity: 0;
+}
+
+.sparkle::before, .sparkle::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+.sparkle::before {
+  width: 100%;
+  height: 1.5px;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.sparkle::after {
+  width: 1.5px;
+  height: 100%;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+@keyframes sparkleFloat {
+  0% { opacity: 0; transform: translateY(30px) rotate(0deg) scale(0.3); }
+  20% { opacity: 1; }
+  50% { opacity: 0.5; transform: translateY(-50px) rotate(180deg) scale(1); }
+  80% { opacity: 0.8; }
+  100% { opacity: 0; transform: translateY(-100px) rotate(360deg) scale(0.3); }
+}
+
+/* =============================================
+   DREAMCATCHER SVG BORDERS (replacing cacti)
+   + Small cartoony cacti at the base
+   ============================================= */
+.border-left, .border-right {
+  position: fixed;
+  bottom: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.border-left { left: 0; }
+.border-right { right: 0; }
+
+/* Dreamcatcher glow pulse */
+@keyframes dcGlow {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(0,229,255,0.3)); }
+  50% { filter: drop-shadow(0 0 12px rgba(139,92,246,0.5)); }
+}
+
+.dc-glow { animation: dcGlow 4s ease-in-out infinite; }
+
+/* =============================================
+   CONTENT WRAPPER
+   ============================================= */
+.content-wrapper {
+  position: relative;
+  z-index: 5;
+  max-width: 1020px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* =============================================
+   NAVIGATION — Glassmorphism
+   ============================================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 14px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(5, 5, 26, 0.75);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.nav-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 4px;
+  background: var(--cyan-teal-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  cursor: pointer;
+  filter: drop-shadow(0 0 8px var(--teal-glow));
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.nav-links a:hover, .nav-links a.active {
+  color: var(--teal);
+  text-shadow: 0 0 12px var(--teal-glow);
+}
+
+.nav-cta {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 10px 26px;
+  border: 1.5px solid var(--teal);
+  background: rgba(0, 229, 255, 0.08);
+  color: var(--teal);
+  text-shadow: 0 0 8px var(--teal-glow);
+  border-radius: 50px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: all 0.3s;
+  animation: ctaPulse 3s ease-in-out infinite;
+}
+
+.nav-cta:hover {
+  background: rgba(0, 229, 255, 0.18);
+  box-shadow: 0 0 25px var(--teal-glow), inset 0 0 15px rgba(0,229,255,0.08);
+}
+
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 0 5px rgba(0,229,255,0.2); }
+  50% { box-shadow: 0 0 25px rgba(0,229,255,0.35), 0 0 50px rgba(139,92,246,0.15); }
+}
+
+/* =============================================
+   PAGE CONTAINERS
+   ============================================= */
+.page { display: none; padding-top: 80px; }
+.page.active { display: block; }
+
+/* =============================================
+   HERO SECTION — Matching poster layout
+   ============================================= */
+.hero {
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px 60px;
+  position: relative;
+}
+
+/* Geodesic dome / dreamcatcher web above title */
+.hero-dome {
+  width: 220px;
+  height: 120px;
+  margin-bottom: 24px;
+  opacity: 0.7;
+  animation: domeGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes domeGlow {
+  0% { filter: drop-shadow(0 0 8px var(--teal-glow)); opacity: 0.6; }
+  100% { filter: drop-shadow(0 0 20px var(--purple-glow)); opacity: 0.85; }
+}
+
+.hero-location-tag {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 300;
+  font-size: 0.85rem;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+.hero-tagline-script {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  background: linear-gradient(90deg, rgba(0,229,255,0.7), rgba(139,92,246,0.7), rgba(224,64,251,0.6));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 28px;
+  animation: fadeInDown 1s ease-out;
+  filter: drop-shadow(0 0 12px rgba(139,92,246,0.3));
+}
+
+.hero-title {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2.4rem, 7vw, 5rem);
+  letter-spacing: 8px;
+  line-height: 1.05;
+  background: linear-gradient(180deg, var(--teal) 0%, var(--purple) 60%, var(--magenta) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px var(--teal-glow)) drop-shadow(0 0 40px var(--purple-glow));
+  animation: heroTitleGlow 4s ease-in-out infinite alternate, fadeInUp 1s ease-out;
+  margin-bottom: 4px;
+}
+
+@keyframes heroTitleGlow {
+  0% { filter: drop-shadow(0 0 15px var(--teal-glow)) drop-shadow(0 0 30px rgba(139,92,246,0.2)); }
+  100% { filter: drop-shadow(0 0 25px var(--purple-glow)) drop-shadow(0 0 50px rgba(0,229,255,0.2)); }
+}
+
+.hero-subtitle {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 200;
+  font-size: clamp(1rem, 2.5vw, 1.6rem);
+  letter-spacing: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+  animation: fadeInUp 1.2s ease-out;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Dual date boxes — matching poster's Pre-Registration / Ticket Sales */
+.hero-dates-row {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 40px;
+  animation: fadeInUp 1.3s ease-out;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero-date-box {
+  text-align: center;
+}
+
+.hero-date-label {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--teal);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+.hero-date-value {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+}
+
+/* CTA Button */
+.hero-cta {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 18px 50px;
+  border: none;
+  border-radius: 60px;
+  background: linear-gradient(135deg, var(--teal), var(--purple));
+  color: #fff;
+  letter-spacing: 3px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s;
+  animation: ctaPulse 3s ease-in-out infinite;
+  margin-bottom: 50px;
+  text-shadow: 0 0 10px rgba(255,255,255,0.4);
+  box-shadow: 0 0 30px var(--teal-glow), 0 0 60px var(--purple-glow);
+}
+
+.hero-cta:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 0 50px var(--teal-glow), 0 0 80px var(--purple-glow), 0 12px 40px rgba(0,0,0,0.4);
+}
+
+/* Countdown */
+.countdown {
+  display: flex;
+  gap: 16px;
+  animation: fadeInUp 1.6s ease-out;
+}
+
+.countdown-block {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  border-radius: 14px;
+  padding: 16px 18px;
+  min-width: 78px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.countdown-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--teal), var(--purple), transparent);
+  opacity: 0.6;
+}
+
+.countdown-number {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 2rem;
+  background: var(--cyan-teal-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+  line-height: 1;
+  filter: drop-shadow(0 0 6px var(--teal-glow));
+}
+
+.countdown-label {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 400;
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+/* Event info below countdown */
+.hero-event-info {
+  margin-top: 40px;
+  text-align: center;
+  animation: fadeInUp 1.8s ease-out;
+}
+
+.hero-venue {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 3px;
+  color: var(--teal);
+  text-shadow: 0 0 10px var(--teal-glow);
+  border-bottom: 1px solid rgba(0,229,255,0.3);
+  display: inline-block;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+}
+
+.hero-month {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: 14px;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.hero-days {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  background: linear-gradient(90deg, var(--teal), var(--magenta));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+}
+
+/* =============================================
+   WAVEFORM / EQUALIZER DIVIDER
+   ============================================= */
+.waveform-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 40px 0;
+  opacity: 0.35;
+}
+
+.waveform-divider .bar {
+  width: 2.5px;
+  border-radius: 2px;
+  animation: eqBounce 1.4s ease-in-out infinite;
+}
+
+.waveform-divider .bar.teal { background: var(--teal); }
+.waveform-divider .bar.purple { background: var(--purple); }
+
+@keyframes eqBounce {
+  0%, 100% { height: 6px; }
+  50% { height: 28px; }
+}
+
+/* =============================================
+   SECTION TITLE
+   ============================================= */
+.section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 1.6rem;
+  text-align: center;
+  letter-spacing: 6px;
+  background: var(--teal-purple-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 10px var(--purple-glow));
+  margin-bottom: 50px;
+}
+
+/* =============================================
+   LINEUP SECTION
+   ============================================= */
+.lineup {
+  text-align: center;
+  padding: 40px 0 60px;
+}
+
+.lineup-tier { margin-bottom: 18px; }
+
+.lineup-tier.headliner .artist-name {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  background: linear-gradient(180deg, #fff, var(--teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 12px var(--teal-glow));
+  display: block;
+  margin-bottom: 10px;
+  letter-spacing: 5px;
+}
+
+.lineup-tier.support .artist-name {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1rem, 2.8vw, 1.6rem);
+  color: var(--purple);
+  text-shadow: 0 0 10px var(--purple-glow);
+  margin: 0 8px;
+  display: inline;
+  letter-spacing: 2px;
+}
+
+.lineup-tier .dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: var(--teal);
+  border-radius: 50%;
+  vertical-align: middle;
+  box-shadow: 0 0 6px var(--teal);
+}
+
+.lineup-tier.opener .artist-name {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 500;
+  font-size: clamp(0.8rem, 1.8vw, 1rem);
+  color: var(--text-secondary);
+  margin: 0 6px;
+  display: inline;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.lineup-tier.opener .dot {
+  width: 3px; height: 3px;
+  background: var(--purple);
+  box-shadow: 0 0 4px var(--purple);
+}
+
+/* =============================================
+   EXPERIENCE CARDS — Glassmorphism
+   ============================================= */
+.experience { padding: 40px 0 80px; }
+
+.cards-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 24px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 38px 28px;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--teal), var(--purple), transparent);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.glass-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: radial-gradient(circle at 50% 0%, rgba(0,229,255,0.05) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.glass-card:hover {
+  transform: translateY(-10px);
+  border-color: var(--glass-border-hover);
+  box-shadow: 0 25px 60px rgba(0, 229, 255, 0.08), 0 0 40px rgba(139, 92, 246, 0.06);
+}
+
+.glass-card:hover::before, .glass-card:hover::after { opacity: 1; }
+
+.card-icon {
+  font-size: 2.6rem;
+  margin-bottom: 18px;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.card-title {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 3px;
+  background: var(--cyan-teal-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-desc {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 400;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  position: relative;
+  z-index: 1;
+}
+
+/* =============================================
+   TICKET PAGE — HEADER
+   ============================================= */
+.ticket-header {
+  text-align: center;
+  padding: 80px 0 50px;
+}
+
+.ticket-header h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  letter-spacing: 5px;
+  background: var(--teal-purple-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 15px var(--teal-glow));
+  margin-bottom: 12px;
+}
+
+.ticket-header p {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 300;
+  font-size: 1rem;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+}
+
+/* =============================================
+   PRICING CARDS
+   ============================================= */
+.pricing-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 24px;
+  padding: 0 0 80px;
+  align-items: start;
+}
+
+.pricing-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(16px);
+  border-radius: 24px;
+  padding: 42px 28px 36px;
+  text-align: center;
+  transition: all 0.4s;
+  position: relative;
+}
+
+.pricing-card.featured {
+  border-color: rgba(0,229,255,0.35);
+  transform: scale(1.03);
+  box-shadow: 0 0 50px rgba(0,229,255,0.08), 0 0 80px rgba(139,92,246,0.06);
+  background: rgba(0,229,255,0.03);
+}
+
+.pricing-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 6px 22px;
+  background: linear-gradient(135deg, var(--teal), var(--purple));
+  color: #fff;
+  border-radius: 30px;
+  text-shadow: 0 0 6px rgba(255,255,255,0.3);
+  box-shadow: 0 0 25px var(--teal-glow);
+}
+
+.pricing-tier {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  background: var(--cyan-teal-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+}
+
+.pricing-price {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 2.8rem;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.pricing-price .currency {
+  font-size: 1.1rem;
+  vertical-align: top;
+  margin-right: 2px;
+  color: var(--text-secondary);
+}
+
+.pricing-subtitle {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-bottom: 26px;
+  letter-spacing: 1.5px;
+}
+
+.pricing-perks {
+  list-style: none;
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.pricing-perks li {
+  padding: 9px 0;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pricing-perks li .check {
+  color: var(--teal);
+  font-size: 0.7rem;
+  filter: drop-shadow(0 0 4px var(--teal-glow));
+}
+
+.pricing-btn {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 14px 0;
+  border: 1.5px solid var(--teal);
+  background: transparent;
+  color: var(--teal);
+  text-shadow: 0 0 6px var(--teal-glow);
+  border-radius: 50px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: all 0.3s;
+  width: 100%;
+}
+
+.pricing-btn:hover {
+  background: rgba(0,229,255,0.1);
+  box-shadow: 0 0 25px var(--teal-glow);
+}
+
+.pricing-card.featured .pricing-btn {
+  border: none;
+  background: linear-gradient(135deg, var(--teal), var(--purple));
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255,255,255,0.3);
+  animation: ctaPulse 3s ease-in-out infinite;
+}
+
+/* =============================================
+   FAQ ACCORDION
+   ============================================= */
+.faq-section { padding: 0 0 80px; }
+
+.faq-item {
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 14px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.015);
+  transition: all 0.3s;
+}
+
+.faq-item.open {
+  border-color: rgba(0,229,255,0.15);
+  box-shadow: 0 0 20px rgba(0,229,255,0.04);
+}
+
+.faq-question {
+  padding: 20px 24px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  transition: color 0.3s;
+}
+
+.faq-item.open .faq-question {
+  color: var(--teal);
+  text-shadow: 0 0 8px var(--teal-glow);
+}
+
+.faq-toggle {
+  font-size: 1.3rem;
+  transition: transform 0.3s;
+  color: var(--purple);
+}
+
+.faq-item.open .faq-toggle { transform: rotate(45deg); }
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s;
+}
+
+.faq-item.open .faq-answer {
+  max-height: 200px;
+  padding: 0 24px 20px;
+}
+
+.faq-answer p {
+  font-weight: 400;
+  font-size: 0.92rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+/* =============================================
+   FOOTER
+   ============================================= */
+.footer {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 40px 0;
+  text-align: center;
+}
+
+.footer-socials {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.footer-socials a {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all 0.3s;
+}
+
+.footer-socials a:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+  box-shadow: 0 0 15px var(--teal-glow);
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  letter-spacing: 1.5px;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover { color: var(--teal); }
+
+.footer-url {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.footer-copy {
+  font-size: 0.75rem;
+  color: rgba(200,208,232,0.2);
+  letter-spacing: 1px;
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 768px) {
+  .navbar { padding: 12px 16px; }
+  .nav-links { gap: 14px; }
+  .nav-links a { font-size: 0.75rem; letter-spacing: 1.5px; }
+  .countdown { gap: 8px; }
+  .countdown-block { padding: 12px 12px; min-width: 60px; }
+  .countdown-number { font-size: 1.5rem; }
+  .pricing-card.featured { transform: scale(1); }
+  .border-left, .border-right { width: 70px; }
+  .hero-dates-row { gap: 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NIGHT SKY w/ NEBULA ===== -->
+<div class="sky-layer"></div>
+<div class="stars-layer" id="starsLayer"></div>
+
+<!-- ===== LASER BEAMS ===== -->
+<div class="laser-layer" id="laserLayer"></div>
+
+<!-- ===== SPARKLE PARTICLES ===== -->
+<div class="sparkle-layer" id="sparkleLayer"></div>
+
+<!-- ===== LEFT BORDER: Dreamcatchers + Cacti ===== -->
+<svg class="border-left dc-glow" width="100" height="100%" viewBox="0 0 100 1000" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMax meet">
+  <!-- Dreamcatcher #1 — Hanging from top -->
+  <g transform="translate(25, 80)">
+    <!-- String -->
+    <line x1="25" y1="-80" x2="25" y2="0" stroke="rgba(0,229,255,0.3)" stroke-width="1"/>
+    <!-- Outer ring -->
+    <circle cx="25" cy="25" r="24" stroke="rgba(0,229,255,0.5)" stroke-width="1.5" fill="none"/>
+    <circle cx="25" cy="25" r="20" stroke="rgba(139,92,246,0.3)" stroke-width="0.8" fill="none"/>
+    <!-- Web pattern -->
+    <polygon points="25,5 42,17 38,38 12,38 8,17" stroke="rgba(0,229,255,0.25)" stroke-width="0.6" fill="none"/>
+    <polygon points="25,12 35,20 32,33 18,33 15,20" stroke="rgba(139,92,246,0.2)" stroke-width="0.5" fill="none"/>
+    <circle cx="25" cy="24" r="3" fill="rgba(224,64,251,0.3)"/>
+    <!-- Feathers -->
+    <line x1="10" y1="48" x2="8" y2="72" stroke="rgba(0,229,255,0.3)" stroke-width="0.8"/>
+    <ellipse cx="8" cy="76" rx="3.5" ry="8" fill="rgba(0,229,255,0.12)" stroke="rgba(0,229,255,0.25)" stroke-width="0.5" transform="rotate(-5,8,76)"/>
+    <line x1="25" y1="49" x2="25" y2="78" stroke="rgba(139,92,246,0.3)" stroke-width="0.8"/>
+    <ellipse cx="25" cy="82" rx="3.5" ry="8" fill="rgba(139,92,246,0.12)" stroke="rgba(139,92,246,0.25)" stroke-width="0.5"/>
+    <line x1="40" y1="48" x2="42" y2="68" stroke="rgba(224,64,251,0.3)" stroke-width="0.8"/>
+    <ellipse cx="42" cy="72" rx="3" ry="7" fill="rgba(224,64,251,0.1)" stroke="rgba(224,64,251,0.2)" stroke-width="0.5" transform="rotate(5,42,72)"/>
+    <!-- Beads -->
+    <circle cx="8" cy="60" r="2" fill="rgba(0,229,255,0.4)"/>
+    <circle cx="25" cy="64" r="2" fill="rgba(139,92,246,0.4)"/>
+    <circle cx="42" cy="58" r="1.5" fill="rgba(224,64,251,0.4)"/>
+  </g>
+
+  <!-- Dreamcatcher #2 — Smaller -->
+  <g transform="translate(35, 320)">
+    <line x1="18" y1="-40" x2="18" y2="0" stroke="rgba(139,92,246,0.25)" stroke-width="0.8"/>
+    <circle cx="18" cy="16" r="16" stroke="rgba(139,92,246,0.45)" stroke-width="1.2" fill="none"/>
+    <circle cx="18" cy="16" r="12" stroke="rgba(0,229,255,0.2)" stroke-width="0.6" fill="none"/>
+    <polygon points="18,4 28,11 26,26 10,26 8,11" stroke="rgba(139,92,246,0.2)" stroke-width="0.5" fill="none"/>
+    <circle cx="18" cy="16" r="2.5" fill="rgba(0,229,255,0.25)"/>
+    <line x1="8" y1="31" x2="6" y2="52" stroke="rgba(0,229,255,0.2)" stroke-width="0.6"/>
+    <ellipse cx="6" cy="55" rx="2.5" ry="6" fill="rgba(0,229,255,0.08)" stroke="rgba(0,229,255,0.15)" stroke-width="0.4"/>
+    <line x1="28" y1="31" x2="30" y2="48" stroke="rgba(224,64,251,0.2)" stroke-width="0.6"/>
+    <ellipse cx="30" cy="51" rx="2.5" ry="6" fill="rgba(224,64,251,0.08)" stroke="rgba(224,64,251,0.15)" stroke-width="0.4"/>
+  </g>
+
+  <!-- Cartoony Saguaro Cactus -->
+  <g transform="translate(8, 680)">
+    <rect x="16" y="0" width="22" height="140" rx="11" fill="#1a6b3a" opacity="0.6"/>
+    <rect x="38" y="35" width="16" height="55" rx="8" fill="#1a6b3a" opacity="0.5"/>
+    <rect x="-2" y="50" width="18" height="60" rx="9" fill="#1a6b3a" opacity="0.5"/>
+    <!-- Teal glow on cactus -->
+    <rect x="16" y="0" width="22" height="140" rx="11" fill="url(#cactusGlowL)" opacity="0.15"/>
+    <!-- Flower -->
+    <circle cx="27" cy="-3" r="5" fill="rgba(224,64,251,0.5)"/>
+    <circle cx="27" cy="-3" r="2.5" fill="rgba(0,229,255,0.4)"/>
+  </g>
+
+  <!-- Small barrel cactus -->
+  <g transform="translate(45, 870)">
+    <ellipse cx="16" cy="28" rx="16" ry="24" fill="#1a6b3a" opacity="0.5"/>
+    <ellipse cx="16" cy="28" rx="16" ry="24" fill="url(#cactusGlowL)" opacity="0.1"/>
+  </g>
+
+  <defs>
+    <linearGradient id="cactusGlowL" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00e5ff"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- ===== RIGHT BORDER: Dreamcatchers + Cacti ===== -->
+<svg class="border-right" width="100" height="100%" viewBox="0 0 100 1000" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMaxYMax meet" style="transform: scaleX(-1);">
+  <!-- Dreamcatcher #1 -->
+  <g class="dc-glow" transform="translate(20, 120)">
+    <line x1="28" y1="-120" x2="28" y2="0" stroke="rgba(0,229,255,0.25)" stroke-width="1"/>
+    <circle cx="28" cy="28" r="27" stroke="rgba(0,229,255,0.45)" stroke-width="1.5" fill="none"/>
+    <circle cx="28" cy="28" r="22" stroke="rgba(139,92,246,0.3)" stroke-width="0.8" fill="none"/>
+    <circle cx="28" cy="28" r="14" stroke="rgba(0,229,255,0.15)" stroke-width="0.5" fill="none"/>
+    <polygon points="28,5 48,18 44,45 12,45 8,18" stroke="rgba(139,92,246,0.2)" stroke-width="0.6" fill="none"/>
+    <polygon points="28,14 38,22 36,38 20,38 18,22" stroke="rgba(0,229,255,0.15)" stroke-width="0.4" fill="none"/>
+    <circle cx="28" cy="27" r="3.5" fill="rgba(224,64,251,0.25)"/>
+    <!-- Feathers -->
+    <line x1="8" y1="54" x2="4" y2="82" stroke="rgba(139,92,246,0.3)" stroke-width="0.8"/>
+    <ellipse cx="4" cy="86" rx="4" ry="9" fill="rgba(139,92,246,0.1)" stroke="rgba(139,92,246,0.2)" stroke-width="0.5" transform="rotate(-8,4,86)"/>
+    <line x1="28" y1="55" x2="28" y2="88" stroke="rgba(0,229,255,0.3)" stroke-width="0.8"/>
+    <ellipse cx="28" cy="92" rx="4" ry="9" fill="rgba(0,229,255,0.1)" stroke="rgba(0,229,255,0.2)" stroke-width="0.5"/>
+    <line x1="48" y1="54" x2="52" y2="78" stroke="rgba(224,64,251,0.25)" stroke-width="0.8"/>
+    <ellipse cx="52" cy="82" rx="3.5" ry="8" fill="rgba(224,64,251,0.08)" stroke="rgba(224,64,251,0.15)" stroke-width="0.5" transform="rotate(8,52,82)"/>
+    <circle cx="4" cy="68" r="2" fill="rgba(139,92,246,0.35)"/>
+    <circle cx="28" cy="72" r="2" fill="rgba(0,229,255,0.35)"/>
+    <circle cx="52" cy="66" r="1.5" fill="rgba(224,64,251,0.35)"/>
+  </g>
+
+  <!-- Dreamcatcher #2 -->
+  <g class="dc-glow" transform="translate(40, 400)">
+    <line x1="15" y1="-50" x2="15" y2="0" stroke="rgba(224,64,251,0.2)" stroke-width="0.8"/>
+    <circle cx="15" cy="14" r="14" stroke="rgba(224,64,251,0.35)" stroke-width="1" fill="none"/>
+    <circle cx="15" cy="14" r="9" stroke="rgba(0,229,255,0.2)" stroke-width="0.5" fill="none"/>
+    <circle cx="15" cy="14" r="2" fill="rgba(0,229,255,0.3)"/>
+    <line x1="5" y1="27" x2="3" y2="44" stroke="rgba(139,92,246,0.2)" stroke-width="0.5"/>
+    <ellipse cx="3" cy="47" rx="2" ry="5" fill="rgba(139,92,246,0.08)"/>
+    <line x1="25" y1="27" x2="27" y2="42" stroke="rgba(0,229,255,0.2)" stroke-width="0.5"/>
+    <ellipse cx="27" cy="45" rx="2" ry="5" fill="rgba(0,229,255,0.08)"/>
+  </g>
+
+  <!-- Tall Saguaro -->
+  <g transform="translate(5, 650)">
+    <rect x="18" y="0" width="24" height="160" rx="12" fill="#1a6b3a" opacity="0.55"/>
+    <rect x="42" y="40" width="18" height="65" rx="9" fill="#1a6b3a" opacity="0.45"/>
+    <rect x="0" y="60" width="18" height="55" rx="9" fill="#1a6b3a" opacity="0.45"/>
+    <circle cx="30" cy="-4" r="5" fill="rgba(0,229,255,0.35)"/>
+    <circle cx="30" cy="-4" r="2.5" fill="rgba(224,64,251,0.3)"/>
+  </g>
+
+  <!-- Barrel cactus -->
+  <g transform="translate(50, 880)">
+    <ellipse cx="14" cy="22" rx="14" ry="20" fill="#1a6b3a" opacity="0.45"/>
+  </g>
+</svg>
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="navbar">
+  <div class="nav-logo" onclick="showPage('landing')">DREAMCATCHER</div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('landing')" class="active" id="nav-home">HOME</a></li>
+    <li><a onclick="scrollToSection('lineup')">LINEUP</a></li>
+    <li><a onclick="scrollToSection('experience')">EXPERIENCE</a></li>
+    <li><a onclick="showPage('tickets')" id="nav-tickets">TICKETS</a></li>
+  </ul>
+  <button class="nav-cta" onclick="showPage('tickets')">REGISTER</button>
+</nav>
+
+<!-- ===== LANDING PAGE ===== -->
+<div class="page active" id="page-landing">
+  <div class="content-wrapper">
+
+    <section class="hero">
+      <!-- Geodesic dome / dreamcatcher web SVG -->
+      <svg class="hero-dome" viewBox="0 0 200 110" fill="none">
+        <ellipse cx="100" cy="100" rx="95" ry="55" stroke="url(#domeGrad)" stroke-width="1.2" fill="none" opacity="0.5"/>
+        <ellipse cx="100" cy="100" rx="75" ry="44" stroke="url(#domeGrad)" stroke-width="0.8" fill="none" opacity="0.35"/>
+        <ellipse cx="100" cy="100" rx="55" ry="32" stroke="url(#domeGrad)" stroke-width="0.6" fill="none" opacity="0.25"/>
+        <!-- Vertical arcs -->
+        <path d="M100,45 Q100,100 100,155" stroke="rgba(0,229,255,0.2)" stroke-width="0.6" fill="none"/>
+        <path d="M50,68 Q100,40 150,68" stroke="rgba(139,92,246,0.2)" stroke-width="0.6" fill="none"/>
+        <path d="M30,85 Q100,30 170,85" stroke="rgba(0,229,255,0.15)" stroke-width="0.5" fill="none"/>
+        <path d="M60,60 Q100,35 140,60" stroke="rgba(224,64,251,0.15)" stroke-width="0.4" fill="none"/>
+        <!-- Cross struts -->
+        <line x1="20" y1="95" x2="180" y2="95" stroke="rgba(0,229,255,0.1)" stroke-width="0.4"/>
+        <line x1="40" y1="75" x2="160" y2="75" stroke="rgba(139,92,246,0.1)" stroke-width="0.3"/>
+        <defs>
+          <linearGradient id="domeGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#00e5ff"/>
+            <stop offset="50%" stop-color="#8b5cf6"/>
+            <stop offset="100%" stop-color="#e040fb"/>
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <div class="hero-location-tag">C A L I F O R N I A &nbsp; 2 0 2 6</div>
+      <div class="hero-tagline-script">Dreaming Together Under A Desert Night Sky</div>
+
+      <h1 class="hero-title">DREAMCATCHER</h1>
+      <div class="hero-subtitle">M U S I C &nbsp; F E S T I V A L</div>
+
+      <!-- Pre-Reg / Ticket Sales dates from poster -->
+      <div class="hero-dates-row">
+        <div class="hero-date-box">
+          <div class="hero-date-label">Pre-Registration</div>
+          <div class="hero-date-value">FEBRUARY 14th, 2026</div>
+        </div>
+        <div class="hero-date-box">
+          <div class="hero-date-label">Ticket Sales</div>
+          <div class="hero-date-value">JUNE 1st, 2026</div>
+        </div>
+      </div>
+
+      <button class="hero-cta" onclick="showPage('tickets')">GET TICKETS ✦</button>
+
+      <div class="countdown">
+        <div class="countdown-block">
+          <span class="countdown-number" id="cd-days">205</span>
+          <span class="countdown-label">DAYS</span>
+        </div>
+        <div class="countdown-block">
+          <span class="countdown-number" id="cd-hours">08</span>
+          <span class="countdown-label">HOURS</span>
+        </div>
+        <div class="countdown-block">
+          <span class="countdown-number" id="cd-mins">42</span>
+          <span class="countdown-label">MINS</span>
+        </div>
+        <div class="countdown-block">
+          <span class="countdown-number" id="cd-secs">17</span>
+          <span class="countdown-label">SECS</span>
+        </div>
+      </div>
+
+      <!-- Venue & Date info matching poster bottom -->
+      <div class="hero-event-info">
+        <div class="hero-venue">New Berry Springs, Lancaster</div>
+        <div class="hero-month">S E P T E M B E R</div>
+        <div class="hero-days">11th–13th & 18th–20th, 2026</div>
+      </div>
+    </section>
+
+    <div class="waveform-divider" id="waveform1"></div>
+
+    <!-- LINEUP -->
+    <section class="lineup" id="lineup">
+      <h2 class="section-title">✦ THE LINEUP ✦</h2>
+      <div class="lineup-tier headliner">
+        <span class="artist-name">REZZ</span>
+        <span class="artist-name">ILLENIUM</span>
+      </div>
+      <div class="lineup-tier support">
+        <span class="artist-name">EXCISION</span>
+        <span class="dot"></span>
+        <span class="artist-name">SEVEN LIONS</span>
+        <span class="dot"></span>
+        <span class="artist-name">GRIZ</span>
+      </div>
+      <div class="lineup-tier support" style="opacity:0.75; font-size:0.88em;">
+        <span class="artist-name">ZEDS DEAD</span>
+        <span class="dot"></span>
+        <span class="artist-name">SUBTRONICS</span>
+        <span class="dot"></span>
+        <span class="artist-name">TOKiMONSTA</span>
+      </div>
+      <div class="lineup-tier opener">
+        <span class="artist-name">RAVENSCOON</span>
+        <span class="dot"></span>
+        <span class="artist-name">LUCII</span>
+        <span class="dot"></span>
+        <span class="artist-name">TAPE B</span>
+        <span class="dot"></span>
+        <span class="artist-name">PEEKABOO</span>
+        <span class="dot"></span>
+        <span class="artist-name">LEVEL UP</span>
+        <span class="dot"></span>
+        <span class="artist-name">MOORE KISMET</span>
+      </div>
+    </section>
+
+    <div class="waveform-divider" id="waveform2"></div>
+
+    <!-- EXPERIENCE -->
+    <section class="experience" id="experience">
+      <h2 class="section-title">✦ THE EXPERIENCE ✦</h2>
+      <div class="cards-row">
+        <div class="glass-card">
+          <span class="card-icon">🎆</span>
+          <div class="card-title">MAIN STAGE</div>
+          <p class="card-desc">A massive dreamcatcher-shaped LED structure rises from the sand. Lasers cut the sky while 100,000 watts of bass shake the desert floor.</p>
+        </div>
+        <div class="glass-card">
+          <span class="card-icon">🎧</span>
+          <div class="card-title">SILENT DISCO</div>
+          <p class="card-desc">Three channels under the stars. Choose your frequency, find your tribe, and dance until sunrise on the Route 66 corridor.</p>
+        </div>
+        <div class="glass-card">
+          <span class="card-icon">🌵</span>
+          <div class="card-title">ART INSTALLATIONS</div>
+          <p class="card-desc">Giant illuminated dreamcatchers, interactive sound gardens, and projection-mapped desert landscapes. A waking dream you walk through.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-socials">
+        <a href="#" title="Instagram">IG</a>
+        <a href="#" title="Twitter/X">X</a>
+        <a href="#" title="TikTok">TT</a>
+        <a href="#" title="Spotify">SP</a>
+      </div>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+        <a href="#">Press</a>
+      </div>
+      <p class="footer-url">DREAMCATCHERMUSICFESTIVAL.COM</p>
+      <p class="footer-copy">© 2026 DREAMCATCHER MUSIC FESTIVAL. ALL RIGHTS RESERVED.</p>
+    </footer>
+  </div>
+</div>
+
+<!-- ===== TICKETS PAGE ===== -->
+<div class="page" id="page-tickets">
+  <div class="content-wrapper">
+
+    <section class="ticket-header">
+      <h1>SECURE YOUR SPOT</h1>
+      <p>LIMITED PASSES — TWO WEEKENDS — ONE DREAM</p>
+    </section>
+
+    <div class="pricing-row">
+      <div class="pricing-card">
+        <div class="pricing-tier">GENERAL ADMISSION</div>
+        <div class="pricing-price"><span class="currency">$</span>249</div>
+        <div class="pricing-subtitle">per weekend · 3-day pass</div>
+        <ul class="pricing-perks">
+          <li><span class="check">◆</span> Access to all 3 stages</li>
+          <li><span class="check">◆</span> General camping grounds</li>
+          <li><span class="check">◆</span> Art installation access</li>
+          <li><span class="check">◆</span> Silent disco entry</li>
+        </ul>
+        <button class="pricing-btn">BUY NOW</button>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="pricing-badge">✦ MOST POPULAR</div>
+        <div class="pricing-tier">VIP PASS</div>
+        <div class="pricing-price"><span class="currency">$</span>499</div>
+        <div class="pricing-subtitle">per weekend · 3-day pass + perks</div>
+        <ul class="pricing-perks">
+          <li><span class="check">◆</span> Everything in GA</li>
+          <li><span class="check">◆</span> VIP viewing platforms</li>
+          <li><span class="check">◆</span> Premium shaded camping</li>
+          <li><span class="check">◆</span> Exclusive merch drop</li>
+          <li><span class="check">◆</span> Express entry lanes</li>
+        </ul>
+        <button class="pricing-btn">BUY NOW</button>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pricing-tier">BACKSTAGE PASS</div>
+        <div class="pricing-price"><span class="currency">$</span>899</div>
+        <div class="pricing-subtitle">per weekend · all-access</div>
+        <ul class="pricing-perks">
+          <li><span class="check">◆</span> Everything in VIP</li>
+          <li><span class="check">◆</span> Backstage artist lounge</li>
+          <li><span class="check">◆</span> Private air-conditioned tents</li>
+          <li><span class="check">◆</span> Complimentary bar & food</li>
+          <li><span class="check">◆</span> Soundcheck experience</li>
+          <li><span class="check">◆</span> Signed limited poster</li>
+        </ul>
+        <button class="pricing-btn">BUY NOW</button>
+      </div>
+    </div>
+
+    <section class="faq-section">
+      <h2 class="section-title">✦ FAQ ✦</h2>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <span>What is the refund policy?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer"><p>Full refunds available up to 30 days before the event. After that, passes are transferable but non-refundable. Contact support@dreamcatchermusicfestival.com.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <span>Is there an age requirement?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer"><p>Dreamcatcher is an 18+ event. Valid government-issued ID required at entry. VIP and Backstage areas are 21+ only.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <span>Can I attend both weekends?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer"><p>Absolutely. Dual-weekend bundles are available at checkout with a 15% discount. Each pass covers one 3-day weekend — choose Sept 11–13, Sept 18–20, or both.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <span>What about parking and camping?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer"><p>General parking included with all passes. Car camping add-ons available for $75. VIP/Backstage includes premium camping with showers, charging stations, and shade structures.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          <span>How do I get to New Berry Springs?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-answer"><p>The venue is located off Route 66 near Lancaster, CA. Shuttle services will run from LA Union Station and LAX. Detailed directions and rideshare meetup points will be emailed with your tickets.</p></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-socials">
+        <a href="#" title="Instagram">IG</a>
+        <a href="#" title="Twitter/X">X</a>
+        <a href="#" title="TikTok">TT</a>
+        <a href="#" title="Spotify">SP</a>
+      </div>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+        <a href="#">Press</a>
+      </div>
+      <p class="footer-url">DREAMCATCHERMUSICFESTIVAL.COM</p>
+      <p class="footer-copy">© 2026 DREAMCATCHER MUSIC FESTIVAL. ALL RIGHTS RESERVED.</p>
+    </footer>
+  </div>
+</div>
+
+<script>
+// ===== STARS (with teal/purple tinted stars for nebula feel) =====
+(function() {
+  const layer = document.getElementById('starsLayer');
+  const tints = ['', '', '', 'teal-tint', 'purple-tint']; // mostly white, some colored
+  for (let i = 0; i < 220; i++) {
+    const star = document.createElement('div');
+    const tint = tints[Math.floor(Math.random() * tints.length)];
+    star.className = 'star' + (Math.random() > 0.55 ? ' twinkle' : '') + (tint ? ' ' + tint : '');
+    const size = Math.random() * 2.5 + 0.5;
+    star.style.cssText = `
+      width:${size}px;height:${size}px;
+      top:${Math.random()*100}%;left:${Math.random()*100}%;
+      opacity:${Math.random()*0.6+0.3};
+      animation-delay:${Math.random()*6}s;
+      animation-duration:${2+Math.random()*4}s;
+    `;
+    layer.appendChild(star);
+  }
+  // Shooting stars
+  for (let i = 0; i < 4; i++) {
+    const ss = document.createElement('div');
+    ss.className = 'shooting-star';
+    ss.style.cssText = `top:${Math.random()*35}%;left:${Math.random()*50}%;animation-delay:${i*7+Math.random()*5}s;animation-duration:${6+Math.random()*5}s;`;
+    layer.appendChild(ss);
+  }
+})();
+
+// ===== LASER BEAMS =====
+(function() {
+  const layer = document.getElementById('laserLayer');
+  const types = ['teal','purple','magenta','teal','purple'];
+  for (let i = 0; i < 8; i++) {
+    const laser = document.createElement('div');
+    laser.className = 'laser ' + types[i % types.length];
+    const startAngle = -30 + i * 8;
+    const endAngle = startAngle + (Math.random() * 20 - 10);
+    laser.style.cssText = `
+      left:${35 + i * 4}%;
+      --start-angle:${startAngle}deg;
+      --end-angle:${endAngle}deg;
+      animation-delay:${i * 0.8}s;
+      animation-duration:${8 + Math.random() * 6}s;
+    `;
+    layer.appendChild(laser);
+  }
+})();
+
+// ===== SPARKLE PARTICLES =====
+(function() {
+  const layer = document.getElementById('sparkleLayer');
+  const colors = ['#ffffff','#00e5ff','#8b5cf6','#e040fb','rgba(255,255,255,0.8)'];
+  for (let i = 0; i < 45; i++) {
+    const sp = document.createElement('div');
+    sp.className = 'sparkle';
+    const size = Math.random() * 7 + 3;
+    sp.style.cssText = `
+      width:${size}px;height:${size}px;
+      top:${Math.random()*100}%;left:${Math.random()*100}%;
+      color:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-delay:${Math.random()*9}s;
+      animation-duration:${5+Math.random()*7}s;
+    `;
+    layer.appendChild(sp);
+  }
+})();
+
+// ===== WAVEFORM BARS =====
+function buildWaveform(id) {
+  const el = document.getElementById(id);
+  for (let i = 0; i < 55; i++) {
+    const bar = document.createElement('div');
+    bar.className = 'bar ' + (i % 3 === 0 ? 'purple' : 'teal');
+    bar.style.height = (Math.random() * 18 + 4) + 'px';
+    bar.style.animationDelay = (Math.random() * 1.5) + 's';
+    el.appendChild(bar);
+  }
+}
+buildWaveform('waveform1');
+buildWaveform('waveform2');
+
+// ===== PAGE NAV =====
+function showPage(page) {
+  document.getElementById('page-landing').classList.remove('active');
+  document.getElementById('page-tickets').classList.remove('active');
+  document.getElementById('nav-home').classList.remove('active');
+  document.getElementById('nav-tickets').classList.remove('active');
+  if (page === 'tickets') {
+    document.getElementById('page-tickets').classList.add('active');
+    document.getElementById('nav-tickets').classList.add('active');
+  } else {
+    document.getElementById('page-landing').classList.add('active');
+    document.getElementById('nav-home').classList.add('active');
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function scrollToSection(id) {
+  showPage('landing');
+  setTimeout(() => document.getElementById(id).scrollIntoView({ behavior: 'smooth' }), 100);
+}
+
+// ===== COUNTDOWN (to Sept 11, 2026) =====
+(function() {
+  const target = new Date('2026-09-11T18:00:00').getTime();
+  function update() {
+    const diff = Math.max(0, target - Date.now());
+    document.getElementById('cd-days').textContent = String(Math.floor(diff / 86400000)).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2,'0');
+    document.getElementById('cd-mins').textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
+    document.getElementById('cd-secs').textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2,'0');
+  }
+  update();
+  setInterval(update, 1000);
+})();
+
+// ===== FAQ =====
+function toggleFAQ(el) {
+  const item = el.parentElement;
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+</script>
+</body>
+</html>
